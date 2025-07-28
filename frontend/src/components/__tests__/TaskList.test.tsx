@@ -12,7 +12,7 @@ describe('TaskList', () => {
   it('should render empty state when no tasks', () => {
     render(<TaskList tasks={[]} onDone={mockOnDone} />);
 
-    expect(screen.getByText('No tasks to show.')).toBeInTheDocument();
+    expect(screen.getByText('No tasks yet')).toBeInTheDocument();
   });
 
   it('should render multiple tasks', () => {
