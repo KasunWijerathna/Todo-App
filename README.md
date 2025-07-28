@@ -76,7 +76,7 @@ The application follows a three-tier architecture:
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/KasunWijerathna/Todo-App.git
    cd todo-app
    ```
 
@@ -289,7 +289,3 @@ The application is containerized and ready for deployment:
 4. Add tests for new functionality
 5. Ensure all tests pass
 6. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License. 
