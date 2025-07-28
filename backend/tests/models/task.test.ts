@@ -1,5 +1,3 @@
-import { createTask, getRecentTasks, markTaskCompleted } from '../../src/models/task';
-
 // Mock the database pool
 jest.mock('../../src/models/db', () => ({
   default: {
@@ -7,7 +5,7 @@ jest.mock('../../src/models/db', () => ({
   },
 }));
 
-// Import the mocked pool after the mock is set up
+import { createTask, getRecentTasks, markTaskCompleted } from '../../src/models/task';
 import pool from '../../src/models/db';
 
 describe('Task Model', () => {
@@ -25,15 +23,14 @@ describe('Task Model', () => {
         created_at: '2023-01-01T00:00:00Z',
       };
 
-      const mockQuery = pool.query as any;
-      mockQuery.mockResolvedValueOnce({
+      (pool.query as jest.Mock).mockResolvedValueOnce({
         rows: [mockTask],
         rowCount: 1,
       });
 
       const result = await createTask('Test Task', 'Test Description');
 
-      expect(mockQuery).toHaveBeenCalledWith(
+      expect(pool.query).toHaveBeenCalledWith(
         'INSERT INTO task (title, description) VALUES ($1, $2) RETURNING *',
         ['Test Task', 'Test Description']
       );
@@ -41,8 +38,7 @@ describe('Task Model', () => {
     });
 
     it('should handle database errors', async () => {
-      const mockQuery = pool.query as any;
-      mockQuery.mockRejectedValueOnce(new Error('Database error'));
+      (pool.query as jest.Mock).mockRejectedValueOnce(new Error('Database error'));
 
       await expect(createTask('Test Task', 'Test Description')).rejects.toThrow('Database error');
     });
@@ -67,15 +63,14 @@ describe('Task Model', () => {
         },
       ];
 
-      const mockQuery = pool.query as any;
-      mockQuery.mockResolvedValueOnce({
+      (pool.query as jest.Mock).mockResolvedValueOnce({
         rows: mockTasks,
         rowCount: 2,
       });
 
       const result = await getRecentTasks();
 
-      expect(mockQuery).toHaveBeenCalledWith(
+      expect(pool.query).toHaveBeenCalledWith(
         'SELECT * FROM task WHERE completed = FALSE ORDER BY created_at DESC LIMIT $1',
         [5]
       );
@@ -93,15 +88,14 @@ describe('Task Model', () => {
         },
       ];
 
-      const mockQuery = pool.query as any;
-      mockQuery.mockResolvedValueOnce({
+      (pool.query as jest.Mock).mockResolvedValueOnce({
         rows: mockTasks,
         rowCount: 1,
       });
 
       const result = await getRecentTasks(1);
 
-      expect(mockQuery).toHaveBeenCalledWith(
+      expect(pool.query).toHaveBeenCalledWith(
         'SELECT * FROM task WHERE completed = FALSE ORDER BY created_at DESC LIMIT $1',
         [1]
       );
@@ -119,15 +113,14 @@ describe('Task Model', () => {
         created_at: '2023-01-01T00:00:00Z',
       };
 
-      const mockQuery = pool.query as any;
-      mockQuery.mockResolvedValueOnce({
+      (pool.query as jest.Mock).mockResolvedValueOnce({
         rows: [mockTask],
         rowCount: 1,
       });
 
       const result = await markTaskCompleted(1);
 
-      expect(mockQuery).toHaveBeenCalledWith(
+      expect(pool.query).toHaveBeenCalledWith(
         'UPDATE task SET completed = TRUE WHERE id = $1 RETURNING *',
         [1]
       );
@@ -135,15 +128,14 @@ describe('Task Model', () => {
     });
 
     it('should return null when task is not found', async () => {
-      const mockQuery = pool.query as any;
-      mockQuery.mockResolvedValueOnce({
+      (pool.query as jest.Mock).mockResolvedValueOnce({
         rows: [],
         rowCount: 0,
       });
 
       const result = await markTaskCompleted(999);
 
-      expect(mockQuery).toHaveBeenCalledWith(
+      expect(pool.query).toHaveBeenCalledWith(
         'UPDATE task SET completed = TRUE WHERE id = $1 RETURNING *',
         [999]
       );

@@ -11,17 +11,17 @@ describe('TaskForm', () => {
   it('should render form elements', () => {
     render(<TaskForm onAdd={mockOnAdd} />);
 
-    expect(screen.getByPlaceholderText('Title')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Description')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Enter task title')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Enter task description (optional)')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Add Task' })).toBeInTheDocument();
   });
 
   it('should call onAdd with form data when submitted', () => {
     render(<TaskForm onAdd={mockOnAdd} />);
 
-    const titleInput = screen.getByPlaceholderText('Title');
-    const descriptionInput = screen.getByPlaceholderText('Description');
-    const submitButton = screen.getByRole('button', { name: 'Add' });
+    const titleInput = screen.getByPlaceholderText('Enter task title');
+    const descriptionInput = screen.getByPlaceholderText('Enter task description (optional)');
+    const submitButton = screen.getByRole('button', { name: 'Add Task' });
 
     fireEvent.change(titleInput, { target: { value: 'Test Task' } });
     fireEvent.change(descriptionInput, { target: { value: 'Test Description' } });
@@ -33,8 +33,8 @@ describe('TaskForm', () => {
   it('should not call onAdd when title is empty', () => {
     render(<TaskForm onAdd={mockOnAdd} />);
 
-    const descriptionInput = screen.getByPlaceholderText('Description');
-    const submitButton = screen.getByRole('button', { name: 'Add' });
+    const descriptionInput = screen.getByPlaceholderText('Enter task description (optional)');
+    const submitButton = screen.getByRole('button', { name: 'Add Task' });
 
     fireEvent.change(descriptionInput, { target: { value: 'Test Description' } });
     fireEvent.click(submitButton);
@@ -45,9 +45,9 @@ describe('TaskForm', () => {
   it('should not call onAdd when title is only whitespace', () => {
     render(<TaskForm onAdd={mockOnAdd} />);
 
-    const titleInput = screen.getByPlaceholderText('Title');
-    const descriptionInput = screen.getByPlaceholderText('Description');
-    const submitButton = screen.getByRole('button', { name: 'Add' });
+    const titleInput = screen.getByPlaceholderText('Enter task title');
+    const descriptionInput = screen.getByPlaceholderText('Enter task description (optional)');
+    const submitButton = screen.getByRole('button', { name: 'Add Task' });
 
     fireEvent.change(titleInput, { target: { value: '   ' } });
     fireEvent.change(descriptionInput, { target: { value: 'Test Description' } });
@@ -59,9 +59,9 @@ describe('TaskForm', () => {
   it('should clear form after successful submission', () => {
     render(<TaskForm onAdd={mockOnAdd} />);
 
-    const titleInput = screen.getByPlaceholderText('Title') as HTMLInputElement;
-    const descriptionInput = screen.getByPlaceholderText('Description') as HTMLTextAreaElement;
-    const submitButton = screen.getByRole('button', { name: 'Add' });
+    const titleInput = screen.getByPlaceholderText('Enter task title') as HTMLInputElement;
+    const descriptionInput = screen.getByPlaceholderText('Enter task description (optional)') as HTMLTextAreaElement;
+    const submitButton = screen.getByRole('button', { name: 'Add Task' });
 
     fireEvent.change(titleInput, { target: { value: 'Test Task' } });
     fireEvent.change(descriptionInput, { target: { value: 'Test Description' } });
@@ -74,8 +74,8 @@ describe('TaskForm', () => {
   it('should handle empty description', () => {
     render(<TaskForm onAdd={mockOnAdd} />);
 
-    const titleInput = screen.getByPlaceholderText('Title');
-    const submitButton = screen.getByRole('button', { name: 'Add' });
+    const titleInput = screen.getByPlaceholderText('Enter task title');
+    const submitButton = screen.getByRole('button', { name: 'Add Task' });
 
     fireEvent.change(titleInput, { target: { value: 'Test Task' } });
     fireEvent.click(submitButton);
